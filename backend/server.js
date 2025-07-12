@@ -11,7 +11,7 @@ const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
-app.use("/api/v1/auth", authRoutes);
+app.use("/api/v2/auth", authRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
