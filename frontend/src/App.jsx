@@ -1,20 +1,46 @@
-import { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import axios from "axios";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Account from "./pages/Account";
+import Bookings from "./pages/Bookings";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    axios.get("/api/v1/auth/me", { withCredentials: true }).then((res) => {
-      setUser(res.data.user);
-    });
-  }, []);
-
   return (
-    <div>
-      <h1>MERN App</h1>
-      {user ? <p>Welcome, {user.name}</p> : <p>Please log in.</p>}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bookings"
+          element={
+            <ProtectedRoute>
+              <Bookings />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 
